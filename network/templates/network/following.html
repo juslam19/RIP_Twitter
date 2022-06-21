@@ -1,0 +1,104 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'network/helper.js' %}"></script>
+{% endblock %}
+
+<div class="body">
+
+    <h3>Following</h3>
+
+    {% if user.is_authenticated %}
+        <div id="new-post">
+            <h5>Create a Post</h5>
+            <form id="new-post-form" action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                <textarea id="new-post-text" name="post" placeholder="Share something with them!"></textarea>
+                <button type="submit" class="buttons" id="new-post-submit">Post</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <hr class="body-hr">
+    <h5>Ordered by: latest first</h5>
+    {% for post in posts %}
+    <div class="posts">
+        {% if user.is_authenticated %}
+            <h4><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></h4>
+        {% else %}
+            <h4><a href="{% url 'login' %}">{{ post.user }}</a></h4>
+        {% endif %}
+        <h6><div id="post-{{post.id}}">{{ post.post }}</div></h6>
+
+        <div class="edit-box" id="edit-{{post.id}}-box" style="display:none">
+            <h5>Edit post</h5>
+            <div id="edit-{{post.id}}-confirm-message" style="display:none; color:red"><h6>Warning: Changes will be lost</h6></div>
+            <textarea class="edit-form" id="edit-{{post.id}}-form" name="edit-box" placeholder="Change your post here!"></textarea>
+            <div class="next-previous">
+                <div>
+                    <button id="edit-{{post.id}}-cancel" class="buttons" onclick="confirm('{{ post.id }}')">Cancel</button>
+                    <button id="edit-{{post.id}}-confirm" class="buttons" onclick="edit('{{ post.id }}')" disabled
+                            style="font-weight : bold">Confirm Cancel</button>
+                </div>
+                <button id="edit-{{post.id}}-submit" class="buttons"
+                        style="background-color:#002f87; color:white; font-weight : bold">
+                    SAVE
+                </button>
+            </div>
+        </div>
+        <hr>
+        <h6 id="like-{{post.id}}-count">{{ post.likes }} Likes</h6>
+        {% if post.user.id == user.id %}
+            <button id="edit-{{post.id}}-button" class="buttons" onclick="edit('{{ post.id }}')">Edit</button>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <button id="like-{{post.id}}-button" class="buttons" onclick="like('{{ post.id }}')">
+                <span id="like-{{post.id}}-heart" class="hearts" style="color:black;font-size:15px;"> &#9829; LIKE</span>
+            </button>
+            <script type="text/javascript">
+                var id = "{{ post.id }}";
+                update_like_button(id);
+            </script>
+        {% else %}
+            <button class="buttons" onclick="location.href='{% url 'login' %}'">
+                <span class="hearts" style="color:black;font-size:15px;"> &#9829; LIKE</span>
+            </button>
+        {% endif %}
+        <div>{{ post.timestamp }}</div>
+    </div>
+    {% empty %}
+        <div class="posts"><b>Nothing here but us cowards!</b></div>
+    {% endfor %}
+
+    <div class="next-previous">
+        {% if posts.has_previous %}
+        <button class="buttons" onclick="location.href='?page={{ posts.previous_page_number }}'">Prev Page</button>
+        {% else %}
+        <button class="buttons" disabled>Prev Page</button>
+        {% endif %}
+
+        <!--        This makes the left previous and right next buttons-->
+        <div id="paginator-index" style="text-align:center">
+            <div id="post-number">
+                Showing {{ posts.start_index }}-{{ posts.end_index }} of {{ posts.paginator.count }}
+            </div>
+            <div id="page-number">
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+            </div>
+        </div>
+
+        {% if posts.has_next %}
+        <button class="buttons" onclick="location.href='?page={{ posts.next_page_number }}'">Next Page</button>
+        {% else %}
+        <button class="buttons" disabled>Next Page</button>
+        {% endif %}
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

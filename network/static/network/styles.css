@@ -1,0 +1,45 @@
+#new-post-text, .edit-form {
+  min-height: 150px;
+  max-height:300px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+
+}
+
+.posts, .edit-box, #new-post, #profile-info {
+  background-color: #cdcdcd;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 20px 0 20px 0;
+  word-wrap: break-word;
+}
+
+.body {
+  width: 95%;
+  max-width: 750px;
+  margin: 20px auto 20px auto;
+}
+
+.body-hr {
+  width: 80%;
+  max-width: 750px;
+}
+
+.buttons {
+  border-radius: 5px;
+  border-style: none;
+  border: 1px solid black;
+  display: inline-block;
+  height: 40px;
+  line-height: 20px;
+  padding: 10px;
+}
+
+.next-previous {
+  display: flex;
+  justify-content: space-between;
+}
