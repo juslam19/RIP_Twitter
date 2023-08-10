@@ -1,4 +1,4 @@
-[RIP Twitter](#network)
+[Twitter Clone](#network)
 ===================
 
 Demo video: https://youtu.be/D9G2SY4MVDU
