@@ -1,4 +1,4 @@
-[Network](#network)
+[RIP Twitter](#network)
 ===================
 
 Demo video: https://youtu.be/D9G2SY4MVDU
